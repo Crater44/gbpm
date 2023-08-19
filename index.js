@@ -1,17 +1,18 @@
-const exec = require('util').promisify(require('child_process').exec);
 const fs = require('fs');
 const readline = require('readline');
 const { program } = require('commander');
 const axios = require('axios');
-const { baseURL, apiKey } = require('dotenv').config().parsed;
+const { baseURL, authToken } = require('dotenv').config().parsed;
 const { name, description, version } = require('./package.json');
-const { actions, api, setProgramCommands, setProgramConfig, middleware, user_handler } = require('./src/exports.js');
-const { gitIsInstalled } = require('git-is-installed');
+const { actions, constants, messages, api, programHelper, middleware, userHandler } = require('./src/exports');
+// const { gitIsInstalled } = require('git-is-installed'); try with fs
 
-api.config({ baseURL, apiKey, axios });
-user_handler.config({ readline });
+constants.config({ baseURL, authToken });
 
-setProgramConfig({ program, name, description, version });
-setProgramCommands({ program, fs, user_handler, actions, middleware, api });
+api.config({ baseURL, authToken, axios });
+userHandler.config({ readline });
+
+programHelper.config.call(program, {name, description, version});
+programHelper.setCommands.call(program, {fs, constants, messages, userHandler, actions, api, middleware});
 
 program.parse(process.argv);

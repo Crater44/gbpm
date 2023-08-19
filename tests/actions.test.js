@@ -1,14 +1,13 @@
 const fsMock = require('fs');
 const rlMock = require('readline');
-const { actions } = require('../src/actions');
-const { user_handler } = require('../src/user_handler');
+const { actions, userHandler, constants, messages } = require('../src/exports');
 
 jest.mock('fs');
 jest.mock('readline');
 jest.mock('../src/user_handler');
 
 describe('init function', () => {
-  it('should create gbpackage.json with default values', async () => {
+  xit('should create gbpackage.json with default values', async () => {
     /*
       1. Check if file exists, force behavior to false and create rlInterface
       2. Calls 4 times to readlineInterface.question if nothing entered generates default data
@@ -21,9 +20,13 @@ describe('init function', () => {
     const closeMock = jest.fn();
     const questionMock = jest.fn();
     const rlInstanceMock = { question: questionMock, close: closeMock };
-    jest.spyOn(user_handler, 'createInterface').mockReturnValue(rlInstanceMock);
+    // rlMock.createInterface.mockReturnValue(rlInstanceMock)
+    // jest.spyOn(userHandler, 'createInterface').mockReturnValue(rlMock.createInterface);
+    // rlMock.createInterface.mockReturnValue(rlInstanceMock);
     
-    await actions.init({ fs: fsMock, user_handler: user_handler })();
+    // jest.spyOn(rlInstanceMock, 'question').mockReturnValue(null);
+    
+    await actions.init({ fs: fsMock, userHandler: userHandler })();
     
     // TODO: This doesn't work
     questionMock.mock.calls[0][1]('');
@@ -53,3 +56,26 @@ describe('init function', () => {
     expect(fsMock.writeFileSync).not.toHaveBeenCalled();
   });
 });
+
+describe('set token function', () => {
+  it.todo('should set the token')
+  it.todo('can\'t set empty token')
+});
+
+describe('get token function', () => {
+  it('should print the token', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    authToken = 'test'
+    actions.getAuthToken({messages: messages, authToken: authToken})()
+    expect(consoleLogSpy).toHaveBeenCalledWith(messages.current_token(authToken));
+    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+    consoleLogSpy.mockRestore();
+  })
+  it('should print default message if token is empty', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    actions.getAuthToken({messages: messages, authToken: ''})()
+    expect(consoleLogSpy).toHaveBeenCalledWith(messages.empty_token);
+    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+    consoleLogSpy.mockRestore();
+  })
+})

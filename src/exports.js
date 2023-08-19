@@ -1,14 +1,17 @@
-const { actions } = require('./actions.js');
-const { api } = require('./api.js');
-const { middleware } = require('./middleware.js');
-const { setProgramCommands, setProgramConfig } = require('./program_helper.js');
-const { user_handler } = require('./user_handler.js');
+const { actions } = require('./actions');
+const { api } = require('./api');
+const { middleware } = require('./middleware');
+const { programHelper } = require('./program_helper');
+const { userHandler } = require('./user_handler');
+const { constants } = require('./constants');
+const { messages } = require('./messages');
 
 module.exports = {
-  actions,
-  api,
-  middleware,
-  setProgramCommands,
-  setProgramConfig,
-  user_handler,
+  actions: actions,
+  api: api,
+  middleware: middleware,
+  programHelper: programHelper,
+  userHandler: userHandler,
+  constants: constants,
+  messages: messages,
 };

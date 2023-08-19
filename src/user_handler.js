@@ -1,4 +1,4 @@
-exports.user_handler = {
+exports.userHandler = {
   config: function ({readline}) {
     this.readline = readline;
   },
