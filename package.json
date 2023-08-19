@@ -1,0 +1,19 @@
+{
+  "name": "gbpm",
+  "version": "1.0.0",
+  "description": "A GreyBel Package Manager Based on github repositories.\nSet you auth token before using the CLI.\nIt will need an authorization token from github to work, it's free and it can be found on my profile section.",
+  "main": "index.js",
+  "author": "crater44",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "commander": "^11.0.0",
+    "dotenv": "^16.3.1",
+    "git-is-installed": "^1.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.6.2"
+  }
+}
