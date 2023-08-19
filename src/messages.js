@@ -1,5 +1,8 @@
 exports.messages = {
   current_token: token => `Your current token is: ${token}`,
+  pkg_file_name: 'gbpackage.json',
+  pkg_file_already_exists: this.pkg_file_name+' already exists.',
+  pkg_file_created_successfully: this.pkg_file_name+' created successfully.',
   empty_token: "Your token is empty",
   packageDefaultDataPrompt: (key, value) => `${key} (default: ${value}): `,
   required_arg_token: "<token>",

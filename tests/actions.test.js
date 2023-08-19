@@ -7,47 +7,49 @@ jest.mock('readline');
 jest.mock('../src/user_handler');
 
 describe('init function', () => {
-  xit('should create gbpackage.json with default values', async () => {
+  it.only('should create gbpackage.json with default values', async () => {
     /*
       1. Check if file exists, force behavior to false and create rlInterface
       2. Calls 4 times to readlineInterface.question if nothing entered generates default data
       3. Calls 1 time to readlineInterface.close
       4. Calls filesystem with given data
     */
-    const fileName = 'gbpackage.json';
+    const fileName = constants.pkg_file_name;
     const mockWriteFileSync = jest.spyOn(fsMock, 'writeFileSync');
     const mockExistsSync = jest.spyOn(fsMock, 'existsSync').mockReturnValue(false);
-    const closeMock = jest.fn();
-    const questionMock = jest.fn();
-    const rlInstanceMock = { question: questionMock, close: closeMock };
-    // rlMock.createInterface.mockReturnValue(rlInstanceMock)
-    // jest.spyOn(userHandler, 'createInterface').mockReturnValue(rlMock.createInterface);
-    // rlMock.createInterface.mockReturnValue(rlInstanceMock);
+    // const closeMock = jest.fn();
+    // const questionMock = jest.fn();
+    // const rlInterfaceMock = { question: questionMock, close: closeMock }
+    // rlMock.createInterface.mockReturnValue(rlInterfaceMock)
+    // const rlInterfaceMock = jest.spyOn(userHandler, 'createInterface').mockReturnValue({
+    //   question: questionMock,
+    //   close: closeMock
+    // });
+    const mockCreateInterface = jest.spyOn(rlMock, 'createInterface')
+    userHandler.config({rlMock})
     
-    // jest.spyOn(rlInstanceMock, 'question').mockReturnValue(null);
     
-    await actions.init({ fs: fsMock, userHandler: userHandler })();
+    await actions.init({ fs: fsMock, userHandler, messages, pkgData: constants.gbpackage_default_data })();
     
-    // TODO: This doesn't work
-    questionMock.mock.calls[0][1]('');
-    questionMock.mock.calls[1][1]('');
-    questionMock.mock.calls[2][1]('');
-    questionMock.mock.calls[3][1]('');
+    // // TODO: This doesn't work
+    // console.log(questionMock.mock.calls[0]);
+    // return ;
+    // questionMock.mock.calls[0][1]('');
+    // questionMock.mock.calls[1][1]('');
+    // questionMock.mock.calls[2][1]('');
+    // questionMock.mock.calls[3][1]('');
 
+    expect(mockCreateInterface).toHaveBeenCalledTimes(1);
     expect(closeMock).toHaveBeenCalledTimes(1);
+    // expect(questionMock).toHaveBeenCalledTimes(4);
 
     expect(mockExistsSync).toHaveBeenCalledWith(fileName);
-    const defaultData = JSON.stringify({
-      author: "Your Name",
-      description: "Your Project Description",
-      version: "1.0.0",
-      name: "Your Project Name"
-    }, null, 2);
+    const defaultData = JSON.stringify(constants.gbpackage_default_data, null, 2);
     expect(mockWriteFileSync).toHaveBeenCalledWith(fileName, defaultData);
   });
 
   xit('should not create gbpackage.json if it already exists', async () => {
-    const fileName = 'gbpackage.json';
+    const fileName = constants.pkg_file_name;
     const mockExistsSync = jest.spyOn(fsMock, 'existsSync').mockReturnValue(true);
 
     await actions.init({ fs: fsMock, rl: rlMock })();

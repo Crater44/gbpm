@@ -6,25 +6,21 @@ exports.actions = {
     }
     // Install pkg and add it to the dependencies
   },
-  init: ({ fs, userHandler }) => async () => {
-    const fileName = 'gbpackage.json';
+  init: ({ fs, userHandler, messages, pkgData }) => async () => {
+    const fileName = messages.pkg_file_name;
     if (fs.existsSync(fileName)) {
-      console.log('gbpackage.json already exists.');
+      console.log(messages.pkg_file_already_exists);
       return;
     }
-    const pkgData = {
-      author: 'Your Name',
-      description: 'Your Project Description',
-      version: '1.0.0',
-      name: 'Your Project Name'
-    };
-    const readlineInterface = userHandler.createInterface();
+    userHandler.createInterface();
     for (const [key, value] of Object.entries(pkgData)) {
-      pkgData[key] = await userHandler.ask(readlineInterface, `${key} (default: ${value}): `) || value
+      const question = messages.packageDefaultDataPrompt(key, value);
+      const answer = await userHandler.ask(question) || value;
+      pkgData[key] = answer;
     }
     fs.writeFileSync(fileName, JSON.stringify(pkgData, null, 2));
-    console.log('gbpackage.json created successfully.');
-    readlineInterface.close();
+    console.log(messages.pkg_file_created_successfully);
+    userHandler.close();
   },
   getDescription: () => (pkg) => {},
   getAuthor: () => (pkg) => {},

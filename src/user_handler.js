@@ -1,16 +1,22 @@
 exports.userHandler = {
+  readlineInterface: null,
+  readline: null,
   config: function ({readline}) {
     this.readline = readline;
   },
   createInterface: function () {
-    return this.readline.createInterface({
+    this.readlineInterface = this.readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
   },
-  ask: function (readlineInterface, questionText) {
+  ask: function (questionText) {
     return new Promise((resolve, reject) => {
-      readlineInterface.question(questionText, (input) => resolve(input));
+      this.readlineInterface.question(questionText, (input) => resolve(input));
     });
   },
+  close: function() {
+    this.readlineInterface.close();
+    this.readlineInterface = null
+  }
 };
