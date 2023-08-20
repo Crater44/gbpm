@@ -2,7 +2,7 @@ const fs = require('./__mocks__/fs');
 const readline = require('./__mocks__/readline');
 const { actions, userHandler, constants, messages } = require('../src/exports');
 
-describe('init function', () => {
+describe('Command init', () => {
   it('should not create pkg_file if it already exists', async () => {
     fs.existsSync.mockReturnValue(true);
     await actions.init({ 
@@ -34,7 +34,7 @@ describe('init function', () => {
     });
 });
 
-describe('set token function', () => {
+describe('Command set-auth-token token', () => {
   it('should not set an empty token', () => {
     const consoleLogSpy = jest.spyOn(console, 'log');
     const token = '';
@@ -52,7 +52,7 @@ describe('set token function', () => {
   });
 });
 
-describe('get token function', () => {
+describe('Command get-auth-token token', () => {
   it('should print the token', () => {
     const consoleLogSpy = jest.spyOn(console, 'log');
     authToken = 'test'
