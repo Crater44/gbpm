@@ -44,11 +44,16 @@ describe('Command set-auth-token token', () => {
     consoleLogSpy.mockRestore();
   });
   it('should set the token in .env', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log');
     const token = 'new_value';
     const mockEnv = 'TEST=some_var\nAUTH_TOKEN=old_value'
     fs.readFileSync.mockReturnValue(mockEnv);
     actions.setAuthToken({fs, messages})(token);
     expect(fs.writeFileSync).toHaveBeenCalledWith('.env', 'TEST=some_var\nAUTH_TOKEN='+token);
+    expect(fs.readFileSync).toHaveBeenCalledWith('.env', 'utf8');
+    expect(consoleLogSpy).toHaveBeenCalledWith(messages.auth_token_set_successfully);
+    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+    consoleLogSpy.mockRestore();
   });
 });
 

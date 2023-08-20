@@ -28,9 +28,10 @@ exports.actions = {
       console.log(messages.token_param_cant_be_empty);
       return null;
     }
-    const data = fs.readFileSync('.env');
+    const data = fs.readFileSync('.env', 'utf8');
     const modifiedData = data.replace(/^AUTH_TOKEN=.*/gm, `AUTH_TOKEN=${token}`);
     fs.writeFileSync('.env', modifiedData);
+    console.log(messages.auth_token_set_successfully);
   },
   getAuthToken: ({messages, authToken}) => () => {
     if (!authToken) {

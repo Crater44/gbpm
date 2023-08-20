@@ -4,6 +4,7 @@ exports.messages = {
   pkgFileName: 'gbpackage.json',
   file_already_exists: fileName => `${fileName} already exists.`,
   file_created_successfully: fileName => `${fileName} created successfully.`,
+  auth_token_set_successfully: 'Auth token set successfully',
   empty_token: "Your token is empty",
   required_arg_token: "<token>",
   required_arg_package: "<pkg>",
