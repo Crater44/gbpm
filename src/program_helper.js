@@ -9,7 +9,7 @@ exports.programHelper = {
     const commands = {
       set_auth_token: {
         argument: "required_arg_token",
-        action: () => actions.setAuthToken()
+        action: () => actions.setAuthToken({fs, messages})
       },
       get_auth_token: {
         action: () => actions.getAuthToken({ messages: messages, authToken: constants.auth })
