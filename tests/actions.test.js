@@ -35,8 +35,22 @@ describe('init function', () => {
 });
 
 describe('set token function', () => {
-  it.todo('should set the token')
-  it.todo('can\'t set empty token')
+  it('should not set an empty token', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    const token = '';
+    actions.setAuthToken(token);
+    expect(consoleLogSpy).toHaveBeenCalledWith(messages.token_param_cant_be_empty);
+    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+    consoleLogSpy.mockRestore();
+  });
+  it('should set the token in constants and .env', () => {
+    const token = 'new_value';
+    const mockEnv = 'TEST=some_var\nAUTH_TOKEN=old_value'
+    fs.readFileSync.mockReturnValue(mockEnv);
+    actions.setAuthToken(token);
+    expect(constants.AUTH_TOKEN).toBe(token);
+    expect(fs.writeFileSync).toHaveBeenCalledWith('.env', 'TEST=some_var\nAUTH_TOKEN='+token);
+  });
 });
 
 describe('get token function', () => {
