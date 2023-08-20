@@ -17,21 +17,21 @@ describe('Command init', () => {
   });
   
   it('should create pkg_file with default values', async () => {
-      fs.existsSync.mockReturnValue(false);
-      readline._mockQuestion.mockResolvedValue('')
-      userHandler.config({ readline })
-      await actions.init({ 
-        fs: fs,
-        userHandler: userHandler,
-        messages: messages,
-        pkgData: constants.pkgDefaultData,
-        pkgFileName: constants.pkgFileName
-      })();
-      expect(readline.createInterface).toHaveBeenCalledTimes(1);
-      expect(fs.existsSync).toHaveBeenCalledWith(constants.pkgFileName);
-      const defaultData = JSON.stringify(constants.pkgDefaultData, null, 2);
-      expect(fs.writeFileSync).toHaveBeenCalledWith(constants.pkgFileName, defaultData);
-    });
+    fs.existsSync.mockReturnValue(false);
+    readline._mockQuestion.mockResolvedValue('')
+    userHandler.config({ readline })
+    await actions.init({ 
+      fs: fs,
+      userHandler: userHandler,
+      messages: messages,
+      pkgData: constants.pkgDefaultData,
+      pkgFileName: constants.pkgFileName
+    })();
+    expect(readline.createInterface).toHaveBeenCalledTimes(1);
+    expect(fs.existsSync).toHaveBeenCalledWith(constants.pkgFileName);
+    const defaultData = JSON.stringify(constants.pkgDefaultData, null, 2);
+    expect(fs.writeFileSync).toHaveBeenCalledWith(constants.pkgFileName, defaultData);
+  });
 });
 
 describe('Command set-auth-token token', () => {
