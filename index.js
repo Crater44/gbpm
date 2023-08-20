@@ -2,14 +2,18 @@ const fs = require('fs');
 const readline = require('readline');
 const { program } = require('commander');
 const axios = require('axios');
-const { baseURL, authToken } = require('dotenv').config().parsed;
+const { BASE_URL, AUTH_TOKEN } = require('dotenv').config().parsed;
 const { name, description, version } = require('./package.json');
 const { actions, constants, messages, api, programHelper, middleware, userHandler } = require('./src/exports');
 // const { gitIsInstalled } = require('git-is-installed'); try with fs
 
-constants.config({ baseURL, authToken });
+constants.config({ BASE_URL, AUTH_TOKEN });
 
-api.config({ baseURL, authToken, axios });
+api.config({
+  baseURL: constants.BASE_URL,
+  authToken: constants.AUTH_TOKEN,
+  axios: axios,
+});
 userHandler.config({ readline });
 
 programHelper.config.call(program, {name, description, version});
