@@ -6,21 +6,20 @@ exports.actions = {
     }
     // Install pkg and add it to the dependencies
   },
-  init: ({ fs, userHandler, messages, pkgData }) => async () => {
-    const fileName = messages.pkg_file_name;
-    if (fs.existsSync(fileName)) {
-      console.log(messages.pkg_file_already_exists);
+  init: ({ fs, userHandler, messages, pkgData, pkgFileName }) => async () => {
+    if (fs.existsSync(pkgFileName)) {
+      console.log(messages.file_already_exists(pkgFileName));
       return;
     }
     userHandler.createInterface();
     for (const [key, value] of Object.entries(pkgData)) {
-      const question = messages.packageDefaultDataPrompt(key, value);
+      const question = messages.package_default_data_prompt(key, value);
       const answer = await userHandler.ask(question) || value;
       pkgData[key] = answer;
     }
-    fs.writeFileSync(fileName, JSON.stringify(pkgData, null, 2));
-    console.log(messages.pkg_file_created_successfully);
+    fs.writeFileSync(pkgFileName, JSON.stringify(pkgData, null, 2));
     userHandler.close();
+    console.log(messages.file_created_successfully(pkgFileName));
   },
   getDescription: () => (pkg) => {},
   getAuthor: () => (pkg) => {},
