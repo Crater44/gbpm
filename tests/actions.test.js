@@ -4,10 +4,15 @@ const { actions, userHandler, constants, messages } = require('../src/exports');
 
 describe('init function', () => {
   it('should not create pkg_file if it already exists', async () => {
-    const fileName = constants.pkgFileName;
     fs.existsSync.mockReturnValue(true);
-    await actions.init({ fs, userHandler, messages, pkgData: constants.pkgDefaultData })();
-    expect(fs.existsSync).toHaveBeenCalledWith(fileName);
+    await actions.init({ 
+      fs: fs,
+      userHandler: userHandler,
+      messages: messages,
+      pkgData: constants.pkgDefaultData,
+      pkgFileName: constants.pkgFileName
+    })();
+    expect(fs.existsSync).toHaveBeenCalledWith(constants.pkgFileName);
     expect(fs.writeFileSync).not.toHaveBeenCalled();
   });
   
