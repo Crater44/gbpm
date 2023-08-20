@@ -4,12 +4,13 @@ exports.constants = {
       this[key] = value;
     }
   },
-  gbpackage_default_data: {
+  pkgDefaultData: {
     author: 'Your Name',
     description: 'Your Project Description',
     version: '1.0.0',
     name: 'Your Project Name'
   },
+  pkgFileName: 'gbpmrc',
   baseURL: '',
   authToken: '',
 };
