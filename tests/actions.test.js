@@ -16,21 +16,44 @@ describe('Command init', () => {
     expect(fs.writeFileSync).not.toHaveBeenCalled();
   });
   
-  it('should create pkg_file with default values', async () => {
+  it('can create pkg_file with default values', async () => {
     fs.existsSync.mockReturnValue(false);
-    readline._mockQuestion.mockResolvedValue('')
     userHandler.config({ readline })
     await actions.init({ 
       fs: fs,
       userHandler: userHandler,
       messages: messages,
       pkgData: constants.pkgDefaultData,
-      pkgFileName: constants.pkgFileName
+      pkgFileName: constants.pkgFileName,
     })();
     expect(readline.createInterface).toHaveBeenCalledTimes(1);
     expect(fs.existsSync).toHaveBeenCalledWith(constants.pkgFileName);
     const defaultData = JSON.stringify(constants.pkgDefaultData, null, 2);
     expect(fs.writeFileSync).toHaveBeenCalledWith(constants.pkgFileName, defaultData);
+  });
+  
+  it('can create pkg_file with custom values', async () => {
+    fs.existsSync.mockReturnValue(false);
+    readline._mockQuestion
+      .mockResolvedValueOnce('test_value_1')
+      .mockResolvedValueOnce('test_value_2')
+      .mockResolvedValueOnce('test_value_3')
+      .mockResolvedValueOnce('test_value_4')
+    userHandler.config({ readline })
+    await actions.init({ 
+      fs: fs,
+      userHandler: userHandler,
+      messages: messages,
+      pkgData: constants.pkgDefaultData,
+      pkgFileName: constants.pkgFileName,
+    })();
+    const data = JSON.stringify({
+      author: 'test_value_1',
+      description: 'test_value_2',
+      version: 'test_value_3',
+      name: 'test_value_4'
+    }, null, 2);
+    expect(fs.writeFileSync).toHaveBeenCalledWith(constants.pkgFileName, data);
   });
 });
 
@@ -60,7 +83,7 @@ describe('Command set-auth-token token', () => {
 describe('Command get-auth-token token', () => {
   it('should print the token', () => {
     const consoleLogSpy = jest.spyOn(console, 'log');
-    authToken = 'test'
+    const authToken = 'test'
     actions.getAuthToken({messages: messages, authToken: authToken})()
     expect(consoleLogSpy).toHaveBeenCalledWith(messages.current_token(authToken));
     expect(consoleLogSpy).toHaveBeenCalledTimes(1);
