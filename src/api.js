@@ -1,7 +1,7 @@
 exports.api = {
-  config: function({baseURL, apiKey, axios}) {
+  config: function({baseURL, authToken, axios}) {
     axios.defaults.baseURL = baseURL
-    axios.defaults.headers.common = {'Authorization': `bearer ${apiKey}`}
+    axios.defaults.headers.common = {'Authorization': `bearer ${authToken}`}
     this.axios = axios
   },
 }
